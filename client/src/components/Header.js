@@ -1,12 +1,11 @@
 import React from "react"
 
-const Header = () => {
-  return <header>
-    if items.size == 0 {
+import Cart from "./Cart"
 
-    } else {
-      
-    }
+const Header = ({ products }) => {
+  return <header>
+    <h1>The Shop!</h1>
+    <Cart products={products}/>
   </header>
 }
 
