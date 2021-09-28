@@ -18,7 +18,7 @@ const App = () => {
     setProducts(fetchedProducts.data)
 
     const fetchedCart = await axios.get("/api/cart");
-    setProducts(fetchedCart.data)
+    setCart(fetchedCart.data)
     }
 
     updateValues()
