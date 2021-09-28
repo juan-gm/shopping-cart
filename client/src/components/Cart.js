@@ -3,8 +3,9 @@ import React from "react";
 
 const Cart = ({ products }) => {
 
-  function calculateTotal(items) {
-    return 15
+  const calculateTotal = (arr) => {
+    const reducerFunction = (acc, currentElement) => acc + currentElement.price * currentElement.quantity
+    return Math.round(arr.reduce(reducerFunction, 0) * 100) / 100
   }
   
     if (products.length === 0) {
