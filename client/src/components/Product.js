@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
+import EditForm from "./EditForm"
 
 const Product = ({ info, onDeleteProduct, onAddToCart }) => {
   const [editMode, setEditMode] = useState(false)
   const [title, setTitle] = useState(info.title)
   const [quantity, setQuantity] = useState(info.quantity)
   const [price, setPrice] = useState(info.price)
-
-  const [tempTitle, setTempTitle] = useState(title)
-  const [tempQuantity, setTempQuantity] = useState(quantity)
-  const [tempPrice, setTempPrice] = useState(price)
 
   const [isOutOfStock, setIsOutOfStock] = useState(false)
 
@@ -23,22 +20,16 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
 
   const toggleEditMode = () => {
     setEditMode(!editMode)
-
-    setTempTitle(title)
-    setTempQuantity(quantity)
-    setTempPrice(price)
-
   }
 
-  const handleUpdateSubmission = async () => {
+  const handleUpdateSubmission = async (tempTitle, tempQuantity, tempPrice) => {
     toggleEditMode()
     const updatedProduct = {
       title: tempTitle,
       quantity: tempQuantity,
       price: tempPrice
     }
-
-    console.log(info)
+    
     const id = info._id
 
     try {
@@ -77,33 +68,15 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
           <a className="button edit" onClick={toggleEditMode}>Edit</a>
         </div>)
           :
+          (<EditForm
+            title={title}
+            quantity={quantity}
+            price={price}
+            handleUpdate = {handleUpdateSubmission}
+            toggleEditMode={toggleEditMode}
+          />)
 
-          (<div class="edit-form">
-               <h3>Edit Product</h3>
-            <form>
-              <div class="input-group">
-                <label for="product-name">Product Name</label>
-                <input type="text" id="product-name" value={tempTitle} onChange={(e) => setTempTitle(e.target.value)} />
-              </div>
-
-              <div class="input-group">
-                <label for="product-price">Price</label>
-                <input type="text" id="product-price" value={tempPrice} onChange={(e) => setTempPrice(+e.target.value)} />
-              </div>
-
-              <div class="input-group">
-                <label for="product-quantity">Quantity</label>
-                <input type="text" id="product-quantity" value={tempQuantity} onChange={(e) => setTempQuantity(+e.target.value)} />
-              </div>
-
-              <div class="actions form-actions">
-                <a class="button" onClick={handleUpdateSubmission}>Update</a>
-                <a class="button" onClick={toggleEditMode}>Cancel</a>
-              </div>
-            </form>
-          
-            </div>
-          )}
+        }
         
         <a class="delete-button" onClick={deleteProduct}><span>X</span></a>
       </div>

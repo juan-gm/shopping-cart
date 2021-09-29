@@ -4,7 +4,7 @@ import axios from "axios";
 
 import Header from "./Header"
 import ProductSection from "./ProductSection"
-import Form from "./Form"
+import AddForm from "./AddForm"
 
 const App = () => {
   const [products, setProducts] = useState([])
@@ -69,7 +69,7 @@ const App = () => {
     <div id="app">
       <Header cart={cart} checkoutCart={checkoutCart} />
       <ProductSection products={products} onDeleteProduct={handleDeleteProduct} onAddToCart={addProductToCart} />
-      <Form onSubmission={handleNewSubmission}/>
+      <AddForm onSubmission={handleNewSubmission}/>
     </div>
   );
 };

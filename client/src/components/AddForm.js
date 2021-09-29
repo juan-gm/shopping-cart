@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-  const Form = ({ onSubmission }) => {
+const AddForm = ({ onSubmission }) => {
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState("")
   const [quantity, setQuantity] = useState("")
@@ -53,5 +53,5 @@ import { useState } from "react"
   </div>
 }
 
-export default Form
+export default AddForm
 
