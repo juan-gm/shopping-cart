@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Form = ({ onSubmission }) => {
+  const Form = ({ onSubmission }) => {
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState("")
   const [quantity, setQuantity] = useState("")
@@ -23,7 +23,7 @@ const Form = ({ onSubmission }) => {
     }
 
     onSubmission(newProduct)
-    // clear input
+      // clear input
   }
   
   return <div className={adding ? "add-form visible" : "add-form"}>
@@ -54,3 +54,4 @@ const Form = ({ onSubmission }) => {
 }
 
 export default Form
+
