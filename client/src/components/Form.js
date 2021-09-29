@@ -6,7 +6,7 @@ import { useState } from "react"
   const [quantity, setQuantity] = useState("")
   const [price, setPrice] = useState("")
 
-  const handleCancel = () => {
+  const closeAndResetForm = () => {
     setAdding(!adding)
     setTitle("")
     setQuantity("")
@@ -23,7 +23,7 @@ import { useState } from "react"
     }
 
     onSubmission(newProduct)
-      // clear input
+    closeAndResetForm()
   }
   
   return <div className={adding ? "add-form visible" : "add-form"}>
@@ -47,7 +47,7 @@ import { useState } from "react"
 
       <div className="actions form-actions">
         <a className="button" onClick={handleSubmission}>Add</a>
-        <a className="button" onClick={handleCancel}>Cancel</a>
+        <a className="button" onClick={closeAndResetForm}>Cancel</a>
       </div>
     </form>
   </div>

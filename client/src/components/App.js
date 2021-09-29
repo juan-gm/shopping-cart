@@ -6,8 +6,6 @@ import Header from "./Header"
 import ProductSection from "./ProductSection"
 import Form from "./Form"
 
-import data from '../lib/data' 
-
 const App = () => {
   const [products, setProducts] = useState([])
   const [cart, setCart] = useState([])
@@ -24,8 +22,7 @@ const App = () => {
     updateValues()
   }, [])
 
-  const handleSubmission = async (newProduct) => {
-    console.log(newProduct)
+  const handleNewSubmission = async (newProduct) => {
     try {
       const response = await axios.post("/api/products", {...newProduct})
       const data = response.data
@@ -34,12 +31,45 @@ const App = () => {
       console.log(e);
     }
   }
+  
+  const handleDeleteProduct = async (id) => {
+    await axios.delete(`/api/products/${id}`)
+    setProducts(products.filter((prod) => prod._id !== id))
+  }
+
+  const addProductToCart = async (product) => {
+    if (cart.find(prod => prod.title === product.title)) {
+      setCart(cart.map(prod => {
+        if (prod.title === product.title) {
+          return { ...prod, quantity: prod.quantity + 1 }
+        } else {
+          return prod
+        }
+      }))
+    } else {
+      setCart(cart.concat({ ...product, quantity: 1 }))
+    }
+
+    const newItemToAddToTheCart = {
+      productId: product._id,
+      title: product.title,
+      price: product.price
+    }
+    await axios.post("/api/cart", {...newItemToAddToTheCart})
+
+
+  }
+
+  const checkoutCart = async () => {
+    setCart([])
+    await axios.post("/api/cart/checkout")
+  }
 
   return (
     <div id="app">
-      <Header cart={cart}/>
-      <ProductSection products={products} />
-      <Form onSubmission={handleSubmission}/>
+      <Header cart={cart} checkoutCart={checkoutCart} />
+      <ProductSection products={products} onDeleteProduct={handleDeleteProduct} onAddToCart={addProductToCart} />
+      <Form onSubmission={handleNewSubmission}/>
     </div>
   );
 };

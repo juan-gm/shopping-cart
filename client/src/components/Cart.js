@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const Cart = ({ products }) => {
+const Cart = ({ products, checkoutCart }) => {
 
   const calculateTotal = (arr) => {
     const reducerFunction = (acc, currentElement) => acc + currentElement.price * currentElement.quantity
@@ -9,7 +9,6 @@ const Cart = ({ products }) => {
   }
   
     if (products.length === 0) {
-
       return  <div className="cart">
         <h2>Your Cart</h2>
         <p>Your cart is empty</p>
@@ -38,7 +37,7 @@ const Cart = ({ products }) => {
             <td colspan="3" className="total">Total: {calculateTotal(products)} </td>
           </tr>
         </table>
-        <a className="button checkout">Checkout</a>
+        <a className="button checkout" onClick={checkoutCart}>Checkout</a>
       </div>  
     }
 }
