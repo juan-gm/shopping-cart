@@ -1,6 +1,10 @@
 import { useState } from "react"
+import axios from "axios"
+import {useDispatch} from "react-redux"
 
-const AddForm = ({ onSubmission }) => {
+const AddForm = () => {
+  const dispatch = useDispatch()
+  
   const [adding, setAdding] = useState(false)
   const [title, setTitle] = useState("")
   const [quantity, setQuantity] = useState("")
@@ -13,7 +17,7 @@ const AddForm = ({ onSubmission }) => {
     setPrice("")
   }
 
-  const handleSubmission = (e) => {
+  const handleSubmission = async (e) => {
     e.preventDefault()
 
     const newProduct = {
@@ -22,7 +26,14 @@ const AddForm = ({ onSubmission }) => {
       quantity
     }
 
-    onSubmission(newProduct)
+    try {
+      const response = await axios.post("/api/products", {...newProduct})
+      const data = response.data
+      dispatch({type: "CREATE_NEW_PRODUCT", payload: { newProduct: data }})
+    } catch(e) {
+      console.log(e);
+    }
+
     closeAndResetForm()
   }
   
@@ -37,12 +48,12 @@ const AddForm = ({ onSubmission }) => {
 
       <div className="input-group">
         <label for="product-price">Price</label>
-        <input type="text" id="product-price" value={price} onChange={(e) => setPrice(e.target.value)} />
+        <input type="text" id="product-price" value={price} onChange={(e) => setPrice(+e.target.value)} />
       </div>
 
       <div className="input-group">
         <label for="product-quantity">Quantity</label>
-        <input type="text" id="product-quantity" value={quantity} onChange={(e) => setQuantity(e.target.value)} />
+        <input type="text" id="product-quantity" value={quantity} onChange={(e) => setQuantity(+e.target.value)} />
       </div>
 
       <div className="actions form-actions">

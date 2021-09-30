@@ -1,14 +1,43 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import EditForm from "./EditForm"
+import { useDispatch, useSelector } from "react-redux"
 
-const Product = ({ info, onDeleteProduct, onAddToCart }) => {
+const Product = ({ info }) => {
+  const dispatch = useDispatch()
   const [editMode, setEditMode] = useState(false)
   const [title, setTitle] = useState(info.title)
   const [quantity, setQuantity] = useState(info.quantity)
   const [price, setPrice] = useState(info.price)
 
+
   const [isOutOfStock, setIsOutOfStock] = useState(false)
+
+  const onDeleteProduct = async () => {
+    await axios.delete(`/api/products/${info._id}`)
+    dispatch({ type: "DELETE_PRODUCT", payload: { toDeleteId: info._id }})
+  }
+
+  const addProductToCart = async () => {
+    const productToBeAdded = await updateCart()
+    await decrementQuantity()
+    dispatch({type: "ADD_TO_CART", payload: { productToBeAdded, toDecrementId: info._id }}) 
+  }
+
+  const updateCart = async () => {
+    const newItemToAddToTheCart = {
+      productId: info._id,
+      title: info.title,
+      price: +info.price
+    }
+
+    const response = await axios.post("/api/cart", {...newItemToAddToTheCart})
+    return response.data
+  }
+
+  const decrementQuantity = async () => {
+    await axios.put(`/api/products/${info._id}`, {...info, quantity: info.quantity - 1})
+  }
 
   useEffect(() => {
     if (quantity > 0) {
@@ -43,19 +72,7 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
       console.log(e);
     }
   }
-
-  const deleteProduct = () => {
-    const id = info._id
-    onDeleteProduct(id)
-  }
-
-  const addProductToCart = async () => {
-    onAddToCart(info)
-
-    await axios.put(`/api/products/${info._id}`, {...info, quantity: quantity - 1})
-    setQuantity(quantity - 1)
-  }
-
+  console.log("BEHOLD THE QUANTITY", quantity, info)
   return (
     <div className="product">
       <div className="product-details">
@@ -79,7 +96,7 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
         />)
         }
         
-        <a class="delete-button" onClick={deleteProduct}><span>X</span></a>
+        <a class="delete-button" onClick={onDeleteProduct}><span>X</span></a>
       </div>
     </div>
   )

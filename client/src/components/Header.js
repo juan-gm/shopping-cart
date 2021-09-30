@@ -1,10 +1,10 @@
 import React from "react"
 import Cart from "./Cart"
 
-const Header = ({ cart, checkoutCart }) => {
+const Header = () => {
   return <header>
     <h1>The Shop!</h1>
-    <Cart products={cart} checkoutCart={checkoutCart} />
+    <Cart />
   </header>
 }
 
