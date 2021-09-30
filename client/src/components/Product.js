@@ -40,6 +40,10 @@ const Product = ({ info }) => {
   }
 
   useEffect(() => {
+    setQuantity(info.quantity)
+  }, [info.quantity])
+
+  useEffect(() => {
     if (quantity > 0) {
       setIsOutOfStock(false)
     } else {
