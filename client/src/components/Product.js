@@ -24,6 +24,7 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
 
   const handleUpdateSubmission = async (tempTitle, tempQuantity, tempPrice) => {
     toggleEditMode()
+    
     const updatedProduct = {
       title: tempTitle,
       quantity: tempQuantity,
@@ -43,7 +44,7 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
     }
   }
 
-  const deleteProduct = async () => {
+  const deleteProduct = () => {
     const id = info._id
     onDeleteProduct(id)
   }
@@ -54,6 +55,7 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
     await axios.put(`/api/products/${info._id}`, {...info, quantity: quantity - 1})
     setQuantity(quantity - 1)
   }
+
   return (
     <div className="product">
       <div className="product-details">
@@ -68,14 +70,13 @@ const Product = ({ info, onDeleteProduct, onAddToCart }) => {
           <a className="button edit" onClick={toggleEditMode}>Edit</a>
         </div>)
           :
-          (<EditForm
-            title={title}
-            quantity={quantity}
-            price={price}
-            handleUpdate = {handleUpdateSubmission}
-            toggleEditMode={toggleEditMode}
-          />)
-
+        (<EditForm
+          title={title}
+          quantity={quantity}
+          price={price}
+          handleUpdate = {handleUpdateSubmission}
+          toggleEditMode={toggleEditMode}
+        />)
         }
         
         <a class="delete-button" onClick={deleteProduct}><span>X</span></a>

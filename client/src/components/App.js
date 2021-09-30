@@ -38,12 +38,12 @@ const App = () => {
   }
 
   const addProductToCart = async (product) => {
-    if (cart.find(prod => prod.title === product.title)) {
-      setCart(cart.map(prod => {
-        if (prod.title === product.title) {
-          return { ...prod, quantity: prod.quantity + 1 }
+    if (cart.find(p => p.title === product.title)) {
+      setCart(cart.map(p => {
+        if (p.title === product.title) {
+          return { ...p, quantity: p.quantity + 1 }
         } else {
-          return prod
+          return p
         }
       }))
     } else {
@@ -55,9 +55,8 @@ const App = () => {
       title: product.title,
       price: product.price
     }
+    
     await axios.post("/api/cart", {...newItemToAddToTheCart})
-
-
   }
 
   const checkoutCart = async () => {

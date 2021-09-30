@@ -34,7 +34,6 @@ const EditForm = ({ title, quantity, price, handleUpdate, toggleEditMode }) => {
     </div>
     </form>
   </div>
-
 }
 
 export default EditForm

@@ -54,4 +54,3 @@ const AddForm = ({ onSubmission }) => {
 }
 
 export default AddForm
-

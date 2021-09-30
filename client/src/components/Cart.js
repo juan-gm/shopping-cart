@@ -1,21 +1,20 @@
 import React from "react";
 
-
 const Cart = ({ products, checkoutCart }) => {
 
   const calculateTotal = (arr) => {
-    const reducerFunction = (acc, currentElement) => acc + currentElement.price * currentElement.quantity
-    return Math.round(arr.reduce(reducerFunction, 0) * 100) / 100
+    const sumOfPrices = (acc, current) => acc + current.price * current.quantity
+    return Math.round(arr.reduce(sumOfPrices, 0) * 100) / 100
   }
   
     if (products.length === 0) {
       return  <div className="cart">
         <h2>Your Cart</h2>
         <p>Your cart is empty</p>
+        <br/>
         <p>Total: $0</p>
         <a className="button checkout disabled">Checkout</a>
       </div> 
-      
     } else {
       return <div className="cart">
         <h2>Your Cart</h2>
@@ -41,7 +40,5 @@ const Cart = ({ products, checkoutCart }) => {
       </div>  
     }
 }
-export default Cart 
 
-/*
- *      */
+export default Cart 
