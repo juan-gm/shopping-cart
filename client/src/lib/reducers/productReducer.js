@@ -11,13 +11,15 @@ const productReducer = (state = [], action) => {
       return state.filter(product => product._id !== action.payload.toDeleteId) 
     }
     case "UPDATE_PRODUCT": {
-      return state.map(product => {
+      const products = state.map(product => {
         if (product._id === action.payload.toUpdateId) {
           return action.payload.modifiedProduct
         } else {
           return product
         }
       })
+      console.log(products)
+      return products
     }
     case "ADD_TO_CART": {
       console.log("YOU HAVE FOUND ME")

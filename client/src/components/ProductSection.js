@@ -2,6 +2,7 @@ import Product from "./Product"
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
+import { setInitialProducts } from "../actions/productsActions";
 
 const ProductSection = ( ) => {
   const dispatch = useDispatch()
@@ -9,12 +10,12 @@ const ProductSection = ( ) => {
 
   useEffect(() => {
     const updateValues = async () => {
-      const fetchedProducts = await axios.get("/api/products");
-      dispatch({type: 'SET_PRODUCTS', payload: { products: fetchedProducts.data}}) 
+      const fetchedProducts = await axios.get("/api/products")
+      dispatch(setInitialProducts(fetchedProducts.data)) 
     }
 
     updateValues()
-  }, [])
+  }, [dispatch])
 
   return (
     <main>

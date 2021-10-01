@@ -1,6 +1,7 @@
 import { useState } from "react"
 import axios from "axios"
 import {useDispatch} from "react-redux"
+import { createNewProduct } from "../actions/productsActions"
 
 const AddForm = () => {
   const dispatch = useDispatch()
@@ -17,7 +18,7 @@ const AddForm = () => {
     setPrice("")
   }
 
-  const handleSubmission = async (e) => {
+  const addProductSubmit = async (e) => {
     e.preventDefault()
 
     const newProduct = {
@@ -28,8 +29,7 @@ const AddForm = () => {
 
     try {
       const response = await axios.post("/api/products", {...newProduct})
-      const data = response.data
-      dispatch({type: "CREATE_NEW_PRODUCT", payload: { newProduct: data }})
+      dispatch(createNewProduct(response.data))
     } catch(e) {
       console.log(e);
     }
@@ -57,7 +57,7 @@ const AddForm = () => {
       </div>
 
       <div className="actions form-actions">
-        <a className="button" onClick={handleSubmission}>Add</a>
+        <a className="button" onClick={addProductSubmit}>Add</a>
         <a className="button" onClick={closeAndResetForm}>Cancel</a>
       </div>
     </form>

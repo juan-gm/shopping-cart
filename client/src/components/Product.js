@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import axios from "axios"
 import EditForm from "./EditForm"
 import { useDispatch } from "react-redux"
+import { addToCart, deleteProduct } from "../actions/productsActions"
 
 const Product = ({ info }) => {
   const dispatch = useDispatch()
@@ -11,13 +12,16 @@ const Product = ({ info }) => {
 
   const onDeleteProduct = async () => {
     await axios.delete(`/api/products/${info._id}`)
-    dispatch({ type: "DELETE_PRODUCT", payload: { toDeleteId: info._id }})
+    dispatch(deleteProduct(info._id))
   }
 
   const addProductToCart = async () => {
-    const productToBeAdded = await updateCart()
-    await decrementQuantity()
-    dispatch({type: "ADD_TO_CART", payload: { productToBeAdded, toDecrementId: info._id }}) 
+    if (!isOutOfStock) {
+      
+      const productToBeAdded = await updateCart()
+      await decrementQuantity()
+      dispatch(addToCart(productToBeAdded, info._id))
+    }
   }
 
   const updateCart = async () => {
@@ -32,6 +36,7 @@ const Product = ({ info }) => {
   }
 
   const decrementQuantity = async () => {
+    console.log(info._id, "Product id")
     await axios.put(`/api/products/${info._id}`, {...info, quantity: info.quantity - 1})
   }
 
