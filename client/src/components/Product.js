@@ -1,16 +1,12 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import EditForm from "./EditForm"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 
 const Product = ({ info }) => {
   const dispatch = useDispatch()
+
   const [editMode, setEditMode] = useState(false)
-  const [title, setTitle] = useState(info.title)
-  const [quantity, setQuantity] = useState(info.quantity)
-  const [price, setPrice] = useState(info.price)
-
-
   const [isOutOfStock, setIsOutOfStock] = useState(false)
 
   const onDeleteProduct = async () => {
@@ -40,49 +36,24 @@ const Product = ({ info }) => {
   }
 
   useEffect(() => {
-    setQuantity(info.quantity)
-  }, [info.quantity])
-
-  useEffect(() => {
-    if (quantity > 0) {
+    if (info.quantity > 0) {
       setIsOutOfStock(false)
     } else {
       setIsOutOfStock(true)
     }
-  }, [quantity])
+  }, [info.quantity])
 
   const toggleEditMode = () => {
     setEditMode(!editMode)
   }
 
-  const handleUpdateSubmission = async (tempTitle, tempQuantity, tempPrice) => {
-    toggleEditMode()
-    
-    const updatedProduct = {
-      title: tempTitle,
-      quantity: tempQuantity,
-      price: tempPrice
-    }
-    
-    const id = info._id
-
-    try {
-      const response = await axios.put(`/api/products/${id}`, {...updatedProduct})
-      const data = response.data
-      setTitle(data.title)
-      setPrice(+data.price)
-      setQuantity(+data.quantity)
-    } catch(e) {
-      console.log(e);
-    }
-  }
-  console.log("BEHOLD THE QUANTITY", quantity, info)
+  
   return (
     <div className="product">
       <div className="product-details">
-        <h3>{title}</h3>
-        <p className="price">{price}</p>
-        <p className="quantity">{quantity} left in stock</p>
+        <h3>{info.title}</h3>
+        <p className="price">${info.price}</p>
+        <p className="quantity">{info.quantity} left in stock</p>
 
         { !editMode ? 
 
@@ -92,10 +63,10 @@ const Product = ({ info }) => {
         </div>)
           :
         (<EditForm
-          title={title}
-          quantity={quantity}
-          price={price}
-          handleUpdate = {handleUpdateSubmission}
+          title={info.title}
+          quantity={info.quantity}
+          price={info.price}
+          id={info._id}
           toggleEditMode={toggleEditMode}
         />)
         }

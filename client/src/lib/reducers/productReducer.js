@@ -12,7 +12,7 @@ const productReducer = (state = [], action) => {
     }
     case "UPDATE_PRODUCT": {
       return state.map(product => {
-        if (product._id == action.payload.toUpdateId) {
+        if (product._id === action.payload.toUpdateId) {
           return action.payload.modifiedProduct
         } else {
           return product
@@ -34,8 +34,10 @@ const productReducer = (state = [], action) => {
     case "SET_PRODUCTS": {
       return action.payload.products
     }
+    default: {
+      return state
+    }
   }
-  return state
 }
 
 export default productReducer

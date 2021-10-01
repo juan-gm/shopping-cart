@@ -1,13 +1,29 @@
 import { useState } from "react"
+import axios from "axios"
+import { useDispatch } from "react-redux"
 
-const EditForm = ({ title, quantity, price, handleUpdate, toggleEditMode }) => {
-
+const EditForm = ({ title, quantity, price, id, toggleEditMode }) => {
+  const dispatch = useDispatch()
+  
   const [tempTitle, setTempTitle] = useState(title)
   const [tempQuantity, setTempQuantity] = useState(quantity)
   const [tempPrice, setTempPrice] = useState(price)
 
-  const updateSubmission = () => {
-    handleUpdate(tempTitle, tempQuantity, tempPrice)
+  const updateSubmission = async () => {
+    toggleEditMode()
+    
+    const modifiedProduct = {
+      title: tempTitle,
+      quantity: +tempQuantity,
+      price: +tempPrice
+    }
+    
+    try {
+      await axios.put(`/api/products/${id}`, {...modifiedProduct})
+      dispatch({ type: "UPDATE_PRODUCT", payload: { modifiedProduct, toUpdateId: id }})
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   return <div class="edit-form">

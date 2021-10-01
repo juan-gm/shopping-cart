@@ -48,12 +48,12 @@ const Cart = () => {
           return <tr>
             <td>{item.title}</td>
             <td>{item.quantity}</td>
-            <td>{item.price}</td>
+            <td>${item.price}</td>
           </tr>
         })}
 
         <tr>
-          <td colspan="3" className="total">Total: {calculateTotal(products)} </td> 
+          <td colspan="3" className="total">Total: ${calculateTotal(products)} </td> 
         </tr>
       </table>
       <a className="button checkout" onClick={checkoutCart}>Checkout</a>
