@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
 import EditForm from "./EditForm"
 import { useDispatch } from "react-redux"
 import { addToCart, deleteProduct } from "../actions/productsActions"
@@ -11,34 +10,22 @@ const Product = ({ info }) => {
   const [isOutOfStock, setIsOutOfStock] = useState(false)
 
   const onDeleteProduct = async () => {
-    await axios.delete(`/api/products/${info._id}`)
     dispatch(deleteProduct(info._id))
   }
 
   const addProductToCart = async () => {
     if (!isOutOfStock) {
-      
-      const productToBeAdded = await updateCart()
-      await decrementQuantity()
-      dispatch(addToCart(productToBeAdded, info._id))
+      const newItemToAddToTheCart = {
+        productId: info._id,
+        title: info.title,
+        price: +info.price
+      }
+
+      dispatch(addToCart(info, info._id, newItemToAddToTheCart))
+
     }
   }
 
-  const updateCart = async () => {
-    const newItemToAddToTheCart = {
-      productId: info._id,
-      title: info.title,
-      price: +info.price
-    }
-
-    const response = await axios.post("/api/cart", {...newItemToAddToTheCart})
-    return response.data
-  }
-
-  const decrementQuantity = async () => {
-    console.log(info._id, "Product id")
-    await axios.put(`/api/products/${info._id}`, {...info, quantity: info.quantity - 1})
-  }
 
   useEffect(() => {
     if (info.quantity > 0) {

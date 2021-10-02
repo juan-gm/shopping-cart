@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { initialCart, checkout } from "../actions/cartActions"
@@ -9,23 +8,17 @@ const Cart = () => {
   const products = useSelector(state => state.cart)
 
   useEffect(() => {
-    const updateValues = async () => {
-      const fetchedCart = await axios.get("/api/cart");
-      dispatch(initialCart(fetchedCart.data))
-    }
-
-    updateValues()
+    dispatch(initialCart())
+    
   }, [dispatch])
-
 
   const calculateTotal = (arr) => {
     const sumOfPrices = (acc, current) => acc + current.price * current.quantity
     return Math.round(arr.reduce(sumOfPrices, 0) * 100) / 100
   }
   
-  const checkoutCart = async () => {
+  const checkoutCart = () => {
     dispatch(checkout())
-    await axios.post("/api/cart/checkout")
   }
 
   if (products.length === 0) { 

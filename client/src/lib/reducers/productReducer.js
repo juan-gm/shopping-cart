@@ -22,11 +22,8 @@ const productReducer = (state = [], action) => {
       return products
     }
     case "ADD_TO_CART": {
-      console.log("YOU HAVE FOUND ME")
       return state.map(product => {
         if (product._id === action.payload.toDecrementId) {
-          console.log("YOU CAN NEVER CATCH ME. EVER.")
-          console.log({...product, quantity: product.quantity - 1})
           return {...product, quantity: product.quantity - 1}
         } else {
           return product

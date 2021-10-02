@@ -1,5 +1,4 @@
 import { useState } from "react"
-import axios from "axios"
 import {useDispatch} from "react-redux"
 import { createNewProduct } from "../actions/productsActions"
 
@@ -27,14 +26,7 @@ const AddForm = () => {
       quantity
     }
 
-    try {
-      const response = await axios.post("/api/products", {...newProduct})
-      dispatch(createNewProduct(response.data))
-    } catch(e) {
-      console.log(e);
-    }
-
-    closeAndResetForm()
+    dispatch(createNewProduct(newProduct, closeAndResetForm))
   }
   
   return <div className={adding ? "add-form visible" : "add-form"}>

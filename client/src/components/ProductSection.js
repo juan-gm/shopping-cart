@@ -1,20 +1,14 @@
 import Product from "./Product"
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { setInitialProducts } from "../actions/productsActions";
+import { productsReceived } from "../actions/productsActions";
 
 const ProductSection = ( ) => {
   const dispatch = useDispatch()
   const products = useSelector(state => state.products)
 
   useEffect(() => {
-    const updateValues = async () => {
-      const fetchedProducts = await axios.get("/api/products")
-      dispatch(setInitialProducts(fetchedProducts.data)) 
-    }
-
-    updateValues()
+    dispatch(productsReceived())
   }, [dispatch])
 
   return (
