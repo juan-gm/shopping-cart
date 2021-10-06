@@ -1,4 +1,6 @@
-server/.env
+.env
 node_modules
-server/package-lock.json
-client/package-lock.json
+package*.json
+server
+Dockerfile
+docker-compose.yml
